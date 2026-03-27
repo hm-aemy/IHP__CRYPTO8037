@@ -1,0 +1,116 @@
+meta:
+  version: 3
+  flow: Chip
+  substituting_steps:
+    #KLayout.Filler: Magic.Filler
+    # Replace the klayout filler with the GdsFiller
+    Klayout.Filler: Gdsfill.Filler
+
+    # Magic reports some overlaps which can be ignored
+    #Checker.IllegalOverlap: null
+    # Not working correctly
+    #KLayout.SealRing: null
+    # Disable magic DRC
+    #Magic.DRC: null
+    #Checker.MagicDRC: null
+    # Disable KLayout density check
+    #KLayout.Density: null
+    #Checker.KLayoutDensity: null
+
+    # you can uncomment this for the flow to be faster. Comment it again in the final run.
+    #KLayout.DRC: null
+    #Checker.KLayoutDRC: null
+    #KLayout.Antenna: null
+    #Checker.KLayoutAntenna: null
+    #OpenROAD.IRDropReport: null
+    #KLayout.XOR: null
+    #Netgen.LVS: null
+    #Checker.LVS: null
+
+DESIGN_NAME: top
+
+VERILOG_FILES:
+  - src/top.sv
+  - src/chip.sv
+  - ../modules/03-HASHER/src/hasher.sv
+  - ../modules/03-HASHER/src/multiplexer.sv
+  - ../modules/03-HASHER/src/pad_message.sv
+  - ../modules/03-HASHER/src/sha256.sv
+  - ../modules/01-SPI/src/spi.sv
+  - ../modules/02-REG-MSG/src/reg_msg.sv
+
+CLOCK_PORT: clk_PAD
+CLOCK_PERIOD: 200
+
+MAX_FANOUT_CONSTRAINT: 7
+DESIGN_REPAIR_MAX_SLEW_PCT: 70
+
+FP_SIZING: absolute
+FP_CORE_UTIL: 60
+DIE_AREA: [0, 0, 2200, 2200]
+CORE_AREA: [358.0, 358.0, 1842.0, 1842.0]
+
+# initials: 170x339
+# logo: 483x474
+
+PDN_OBSTRUCTIONS:
+  - [TopMetal1, 858, 863, 1342, 1337]
+  - [TopMetal1, 1500, 400, 1670, 739]
+
+ROUTING_OBSTRUCTIONS:
+  - [TopMetal1, 858, 863, 1342, 1337]
+  - [TopMetal1, 1500, 400, 1670, 739]
+
+PDN_CORE_RING: true
+PDN_CORE_RING_CONNECT_TO_PADS: true
+MAGIC_EXT_UNIQUE: notopports
+
+
+PDN_ENABLE_PINS: false
+
+PDN_CORE_RING_VWIDTH: 15
+PDN_CORE_RING_HWIDTH: 15
+
+PDN_CORE_RING_VSPACING: 5
+PDN_CORE_RING_HSPACING: 5
+
+PRIMARY_GDSII_STREAMOUT_TOOL: klayout
+
+#MAGIC_FILLER_SCRIPT: dir::scripts/generate_fill.py  # path to the python script
+#MAGIC_FILLER_OPTIONS: ["-keep"]
+
+PAD_BONDPAD_NAME: bondpad_70x70_5L
+EXTRA_GDS: dir::bondpad_5l/gds/bondpad_70x70_5L.gds
+EXTRA_LEFS: dir::bondpad_5l/lef/bondpad_70x70_5L.lef
+
+PAD_WEST: [
+  "rst_n_pad",
+  "clk_pad",
+]
+
+PAD_SOUTH: [
+  "iovss_pads\\[0\\].iovss_pad",
+  "iovdd_pads\\[0\\].iovdd_pad",
+]
+
+PAD_EAST: [
+  "spi_in_pad",
+  "spi_out_pad",
+  "spi_clk_pad",
+]
+
+PAD_NORTH: [
+  "vdd_pads\\[0\\].vdd_pad",
+  "vss_pads\\[0\\].vss_pad",
+]
+
+VDD_NETS:
+  - VDD
+
+GND_NETS:
+  - VSS
+
+GRT_ALLOW_CONGESTION: true
+
+IGNORE_DISCONNECTED_MODULES:
+  - bondpad_70x70_5L
