@@ -7,7 +7,7 @@
   "trl": 1,
   "sealring_x": 1.0,
   "sealring_y": 1.0,
-  "repository": "https://github.com/hm-aemy/IHP__CRYPTO8037",
+  "repository": "https://github.com/hm-aemy/IHP__CRYPTO8037.git",
   "pdk_version": "287b1b3bc750fadc788a29babf9241c911d61e32",
   "process": "SG13CMOS5L",
   "dependencies": {},
